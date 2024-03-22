@@ -1,0 +1,45 @@
+import cv2
+import os
+
+# Function to capture and save photos 
+def capture_photos(student_name, save_directory):
+    # Initialize the webcam
+    cap = cv2.VideoCapture(0)
+
+    while True:
+        # Capture frame-by-frame
+        ret, frame = cap.read()
+
+        # Display the captured frame
+        cv2.imshow('Press Space to Capture', frame)
+
+        # Check for space key press to capture photo
+        if cv2.waitKey(1) & 0xFF == ord(' '):
+            # Save the captured frame as an image
+            photo_name = f"{student_name}.jpg"
+            photo_path = os.path.join(save_directory, photo_name)
+            cv2.imwrite(photo_path, frame)
+            print(f"Photo saved as: {photo_name}")
+            break
+
+    # Release the webcam and close OpenCV windows
+    cap.release()
+    cv2.destroyAllWindows()
+
+# Main function
+def main():
+    # Directory to save captured photos
+    save_directory = "student_images"
+
+    # Create the directory if it doesn't exist
+    if not os.path.exists(save_directory):
+        os.makedirs(save_directory)
+
+    # Take input from the user for the student's name
+    student_name = input("Enter student's name: ")
+
+    # Capture and save the photo
+    capture_photos(student_name, save_directory)
+
+if __name__ == "__main__":
+    main()
